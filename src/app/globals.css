@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-deep: #07100C;
+    --surface-dark: #0B241A;
+    --surface-elevated: #0E2F22;
+    --surface-subtle: #081A13;
+    
+    --border-muted: #143526;
+    --border-active: #1D533C;
+    --border-glow: #39D98A;
+
+    --brand-primary: #0F6B45;
+    --brand-accent: #39D98A;
+    --brand-bright: #5EF3A1;
+    --brand-emerald: #0A8F56;
+
+    --text-primary: #F2F5F3;
+    --text-muted: #8A9A92;
+    --text-subtle: #556B60;
+
+    --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-code: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  body {
+    background-color: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: var(--font-heading);
+    overflow-x: hidden;
+    selection-background-color: #39D98A;
+    selection-color: #07100C;
+  }
+
+  ::selection {
+    background: #39D98A;
+    color: #07100C;
+  }
+}
+
+/* Custom Technical Background & Circuit Overlay */
+.tech-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(20, 53, 38, 0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 53, 38, 0.25) 1px, transparent 1px);
+}
+
+.tech-dot-matrix {
+  background-image: radial-gradient(rgba(57, 217, 138, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Circuit Line Gradient Accents */
+.circuit-border {
+  border: 1px solid rgba(57, 217, 138, 0.18);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.circuit-border:hover {
+  border-color: rgba(57, 217, 138, 0.5);
+  box-shadow: 0 0 20px -5px rgba(57, 217, 138, 0.15);
+}
+
+/* Marquee Ticker Animation */
+@keyframes ticker {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-ticker {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: ticker 35s linear infinite;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
+
+/* Pulse Glow & Radar Scan */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+.animate-glow-pulse {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* Monospace Terminal Tag */
+.terminal-tag {
+  font-family: var(--font-code);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #07100C;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #143526;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #39D98A;
+}
