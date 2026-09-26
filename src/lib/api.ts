@@ -120,9 +120,20 @@ class ApiClient {
     });
   }
 
-  // Roadmap
+  // Roadmap & Tracks
+  async getRoadmapTracks() {
+    return this.request<any[]>('/roadmap/tracks');
+  }
+
   async getActiveRoadmap() {
     return this.request<any>('/roadmap/active');
+  }
+
+  async generateRoadmap(targetRole?: string) {
+    return this.request<any>('/roadmap/generate', {
+      method: 'POST',
+      body: JSON.stringify({ targetRole }),
+    });
   }
 
   async toggleMilestone(milestoneId: string) {

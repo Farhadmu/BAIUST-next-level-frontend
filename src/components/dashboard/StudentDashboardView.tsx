@@ -9,6 +9,7 @@ import {
   BarChart3, Activity, HeartPulse, Zap
 } from 'lucide-react';
 import { api } from '@/lib/api';
+import { InteractiveRoadmapJourney } from './InteractiveRoadmapJourney';
 
 interface StudentDashboardProps {
   user: any;
@@ -931,85 +932,24 @@ export const StudentDashboardView: React.FC<StudentDashboardProps> = ({
         )}
 
         {/* ========================================================= */}
-        {/* 4. DYNAMIC ROADMAP TAB                                    */}
+        {/* 4. DYNAMIC INTERACTIVE ROADMAP & QUEST JOURNEY           */}
         {/* ========================================================= */}
         {activeTab === 'roadmap' && (
-          <div className="rounded-2xl border border-[#143526] bg-[#0B241A] p-6 space-y-6">
-            <div className="flex items-center justify-between border-b border-[#143526] pb-4">
-              <div>
-                <div className="flex items-center gap-2">
-                  <Layers className="h-5 w-5 text-[#39D98A]" />
-                  <h2 className="text-lg font-bold text-[#F2F5F3]">PERSONALIZED LEARNING ROADMAP</h2>
-                </div>
-                <p className="font-mono text-xs text-[#8A9A92] mt-0.5">
-                  Prerequisite Directed Acyclic Graph (DAG) automatically adapted to your skill baseline.
-                </p>
-              </div>
-            </div>
-
-            {/* Milestones List */}
-            <div className="space-y-3">
-              {(roadmap?.milestones || [
-                { id: 'm-1', order: 1, title: 'Modern HTML5 & Semantic Web Architecture', description: 'Semantic markup, accessibility (WCAG), and responsive CSS Grid.', status: 'COMPLETED', estimatedTime: '1 week', why: 'Essential frontend foundation' },
-                { id: 'm-2', order: 2, title: 'JavaScript ES6+ & TypeScript Strict Typing', description: 'Event loop, promises, interfaces, generics, and strict compiler configs.', status: 'COMPLETED', estimatedTime: '2 weeks', why: 'Ensures enterprise type reliability' },
-                { id: 'm-3', order: 3, title: 'React 19 Hooks & State Architecture', description: 'Custom hooks, Server Components, context, and state machines.', status: 'CURRENT', estimatedTime: '3 weeks', why: 'Core view layer of modern full-stack systems' },
-                { id: 'm-4', order: 4, title: 'Node.js & NestJS Modular REST APIs', description: 'Dependency injection, validation pipes, interceptors, and JWT guards.', status: 'UPCOMING', estimatedTime: '3 weeks', why: 'Backbone of scalable backend services' },
-                { id: 'm-5', order: 5, title: 'PostgreSQL Relational DB & Prisma ORM', description: 'Indexing, B+ Trees, ACID transactions, and query optimization.', status: 'UPCOMING', estimatedTime: '2 weeks', why: 'Relational data persistence' },
-                { id: 'm-6', order: 6, title: 'Docker Containerization & CI/CD Deployment', description: 'Multi-stage builds, GitHub Actions, and container deployment.', status: 'UPCOMING', estimatedTime: '2 weeks', why: 'Production deployment readiness' },
-              ]).map((m: any) => {
-                const isDone = m.status === 'COMPLETED';
-                const isCurrent = m.status === 'CURRENT';
-                return (
-                  <div
-                    key={m.id}
-                    onClick={() => handleToggleMilestone(m.id)}
-                    className={`p-4 rounded-xl border cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-all ${
-                      isDone
-                        ? 'bg-[#0E2F22]/70 border-[#39D98A]/50 text-[#F2F5F3]'
-                        : isCurrent
-                        ? 'bg-[#0B241A] border-[#39D98A] shadow-[0_0_15px_rgba(57,217,138,0.15)] text-[#F2F5F3]'
-                        : 'bg-[#07100C] border-[#143526] text-[#8A9A92] hover:border-[#1D533C]'
-                    }`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="mt-0.5">
-                        <CheckCircle
-                          className={`h-5 w-5 ${
-                            isDone ? 'text-[#39D98A]' : isCurrent ? 'text-yellow-400' : 'text-[#1D533C]'
-                          }`}
-                        />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs font-bold text-[#39D98A]">STEP {m.order}</span>
-                          <span className={`text-xs font-bold ${isDone ? 'line-through text-[#8A9A92]' : 'text-[#F2F5F3]'}`}>
-                            {m.title}
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-[#8A9A92] mt-0.5">{m.description}</p>
-                        {m.why && <span className="font-mono text-[9px] text-[#556B60] block mt-1">Why: {m.why}</span>}
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 shrink-0 font-mono text-[10px]">
-                      <span className="bg-[#07100C] px-2 py-1 rounded text-[#8A9A92]">{m.estimatedTime}</span>
-                      <span
-                        className={`px-2 py-1 rounded border ${
-                          isDone
-                            ? 'bg-[#0E2F22] text-[#39D98A] border-[#1D533C]'
-                            : isCurrent
-                            ? 'bg-yellow-950/40 text-yellow-400 border-yellow-800'
-                            : 'bg-[#07100C] text-[#556B60] border-[#143526]'
-                        }`}
-                      >
-                        {m.status}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <InteractiveRoadmapJourney
+            initialRoadmap={roadmap}
+            onRoadmapUpdate={(updated) => {
+              setRoadmap(updated);
+              loadCockpitData();
+            }}
+            onXpEarned={(xp) => {
+              if (gamification) {
+                setGamification({
+                  ...gamification,
+                  totalXp: (gamification.totalXp || 0) + xp,
+                });
+              }
+            }}
+          />
         )}
 
         {/* ========================================================= */}
